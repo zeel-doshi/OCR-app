@@ -1,0 +1,18 @@
+from lanyocr import LanyOCR
+
+# Initialize LanyOCR
+ocr = LanyOCR()
+
+# Path to the image you want to perform OCR on
+image_path = r'C:/Users/Dell/Desktop/ocr/test.png'  # Replace with your image path
+
+# Options for merging rotated and vertical boxes
+merge_rotated_boxes = True
+merge_vertical_boxes = True
+
+# Perform OCR inference
+results = ocr.ocr(image_path, merge_rotated_boxes=merge_rotated_boxes,
+                  merge_vertical_boxes=merge_vertical_boxes)
+
+# Print the OCR results
+print(results)

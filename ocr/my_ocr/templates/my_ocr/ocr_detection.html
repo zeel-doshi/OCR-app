@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px; /* Adjust container width as needed */
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevents content from overflowing */
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            flex: 0 0 auto;
+            width: 150px;
+            color: #666;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .form-group input[type="file"], 
+        .form-group select {
+            flex: 1 1 auto;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23666" d="M6 9l6 6 6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: calc(100% - 15px);
+            background-position-y: center;
+            background-size: 12px;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            border-radius: 4px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+            border: none; /* Remove default button border */
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .uploaded-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .uploaded-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+        .result-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result-image img {
+            max-width: 70%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+        .download-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .download-button a {
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            border-radius: 4px;
+            display: inline-block;
+            width: 100%; /* Ensure the button takes full width */
+            text-align: center;
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
+        .download-button a:hover {
+            background-color: #45a049;
+        }
+        .combined-img {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .combined-img img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OCR App</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="method">Choose OCR Method:</label>
+                <select id="method" name="method" required>
+                    <option value="paddleOCR">PaddleOCR</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Submit</button>
+        </form>
+
+        {% if uploaded_image_path %}
+        <div class="uploaded-image">
+            <h2>Uploaded Image:</h2>
+            <img src="{{ uploaded_image_path }}" alt="Uploaded Image">
+        </div>
+        <div class="uploaded-image">
+            <h2>Text Detection</h2>
+            <img src="{{ result_image_path_with_boxes }}" alt="Uploaded Image with Boxes">
+        </div>
+        <div class="result-image">
+            <h2>Text Recognition</h2>
+            <img src="{{ result_image_path_with_text }}" alt="Result Image with Text Annotations">
+        </div>
+        <div class="combined-img">
+            <h2>Combined Image</h2>
+            <img src="{{ combined }}" alt="Combined Image">
+        </div>
+        <div class="download-button">
+            <a href="{{ combined }}" download="combined.jpg">Download Combined Image</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
